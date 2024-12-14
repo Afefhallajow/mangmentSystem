@@ -1,0 +1,11 @@
+{
+    "name": "InventoryManagement",
+    "alias": "inventorymanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\InventoryManagement\\Providers\\InventoryManagementServiceProvider"
+    ],
+    "files": []
+}
