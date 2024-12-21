@@ -17,9 +17,9 @@ class BaseEntity extends Model{
 
         // Automatically increment version on update
 
-  /*      static::creating(function ($model) {
+        static::creating(function ($model) {
             $model->creator = Auth::user()->id; // Use the authenticated user's ID
-        });*/
+        });
 
         static::updating(function ($model) {
             $model->version = $model->version + 1;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Extra\UserType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'model_type',
+        'model_id',
+        'type'
     ];
 
     /**
@@ -45,6 +49,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'type' => UserType::class
         ];
     }
+
+    public function model(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
+        return $this->morphTo();
+    }
+
 }

@@ -2,10 +2,10 @@
 
 namespace Modules\CRM\Models;
 
+use App\Models\Attachment;
 use App\Models\BaseEntity;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\CRM\Database\Factories\ClientFactory;
 
 class Client extends BaseEntity
 {
@@ -14,10 +14,31 @@ class Client extends BaseEntity
     public function __construct(array $attributes = [])
     {
         $this->fillable = array_merge($this->fillable, [
-            "email", "phone", "address"
+            "name", "email", "phone", "address"
         ]);
 
         parent::__construct($attributes);
+    }
+
+    protected static function boot(){
+        parent::boot();
+
+        static::deleting(function ($client) {
+            $client->user()->delete();
+        });
+
+        static::updated(function ($client) {
+            if ($client->isDirty(['name', 'email'])) {
+                $client->user()->update([
+                    'name' => $client->name,
+                    'email' => $client->email,
+                ]);
+            }
+        });
+    }
+
+    function user(){
+        return $this->morphOne(User::class, "model");
     }
 
     /**

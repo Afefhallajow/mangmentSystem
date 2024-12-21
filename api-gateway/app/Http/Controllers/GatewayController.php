@@ -13,6 +13,8 @@ class GatewayController extends Controller
         'project' => 'http://127.0.0.1:8002/api', // رابط الخدمة الأولى
         'hrmngmnt' => 'http://127.0.0.1:8001/hrmngmnt', // رابط الخدمة الثانية
         'inventory' => 'http://127.0.0.1:8003/inventory', // رابط الخدمة الثانية
+        'crm' => 'http://127.0.0.1:8003/crm', // رابط الخدمة الثانية
+
     ];
 
     public function handleRequest(Request $request, $service, $endpoint, $extra = null)
@@ -63,6 +65,7 @@ class GatewayController extends Controller
             'details' => $response->body(),
         ], $response->status());
     }
+
     public function upload(Request $request)
     {
         $validated = $request->validate([

@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\testController::class, "test"]);
 
-Route::prefix('/project')->middleware('auth:sanctum')->group(function () {
-    Route::get('/getall', [ProjectController::class, "getAll"]);
+Route::post('/report', [ProjectController::class, "getProjectsStatus"]);
+
+Route::prefix('/project')->middleware('auth:api')->group(function () {
+    Route::get('/getAll', [ProjectController::class, "getAll"]);
     Route::get('/getone/{id}', [ProjectController::class, "getOne"]);
     Route::get('/getTasks/{id}', [ProjectController::class, "getTasksForProject"]);
     Route::post('/save', [ProjectController::class, "save"]);

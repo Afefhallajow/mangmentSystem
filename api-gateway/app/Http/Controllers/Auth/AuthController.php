@@ -6,25 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
 
     public function register(Request $request){
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        $token = $user->createToken('Personal Access Token')->accessToken;
-        return response()->json(['user' => $user, "token" => $token]);
+        $response = Http::withHeaders($request->headers->all())
+            ->send(
+                "POST",
+                "http://127.0.0.1:8003/inventory/",
+                [
+                    'query' => $request->query(),
+                    'json' => $request->all(),
+                ]);
     }
 
     public function login(Request $request){

@@ -24,6 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('inventory/*')) {
                 return true;
             }
+            if ($request->is('crm/*')) {
+                return true;
+            }
             if ($request->is('api/*')) {
                 return true;
             }

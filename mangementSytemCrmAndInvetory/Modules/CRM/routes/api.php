@@ -14,6 +14,7 @@ use Modules\CRM\Http\Controllers\CRMController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('crm', CRMController::class)->names('crm');
+    Route::get("/report", [\Modules\CRM\Http\Controllers\ClientController::class, "getUsersCount"]);
 });

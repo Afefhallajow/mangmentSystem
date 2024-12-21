@@ -16,7 +16,8 @@ class products extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'quantity' => $this->quantity,
-            'price' => $this->price,
+            'description' => $this->description,
+            'price' => number_format($this->price, 2, '.', ','),
             'attachments' => $this->attachments->map(function ($attachment) {
                 return $attachment->full_url; // Use the accessor to return the full URL
             }),

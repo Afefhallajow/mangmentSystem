@@ -13,7 +13,7 @@ class BaseEntity extends Model
         "version" => 0,
     ];
 
-    protected $with = ["creator"];
+/*    protected $with = ["creator"];*/
     protected static function booted(){
 
         // Automatically increment version on update

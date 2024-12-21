@@ -10,9 +10,10 @@ Route::get('/', function (Request $request) {
     return "afgegsg";
 });
 
-Route::prefix('/')->middleware('auth:sanctum')->group(function () {
+Route::prefix('/')->middleware('auth:api')->group(function () {
     Route::prefix('/employee')->group(function () {
         Route::post('/save', [EmployeeController::class, "save"]);
+        Route::delete('/delete/{id}', [EmployeeController::class, "Delete"]);
 
     });
     Route::prefix('/attendance')->group(function () {

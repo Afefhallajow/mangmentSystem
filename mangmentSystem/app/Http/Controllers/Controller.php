@@ -41,6 +41,4 @@ abstract class Controller{
         $temp->save();
         return response()->json($temp, 201);
     }
-
-
 }
