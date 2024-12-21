@@ -1,0 +1,8 @@
+@import "Header.css";
+@import "SideBar.css";
+
+
+body{
+    background-color: #f6f6f6 !important; /* Set your desired styles */
+    font-family: Arial, sans-serif !important;
+}
