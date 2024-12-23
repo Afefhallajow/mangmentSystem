@@ -4,11 +4,13 @@ import Cookies from 'js-cookie';
 import { createStore } from 'vuex'; // Use createStore in Vue 3
 import permissions from '../services/permission';
 import cart from "@/services/cart";
+import user from "@/services/userType";
 
 export default createStore({
     modules: {
         permissions, // Register the permissions module
         cart,
+        user,
     },
     plugins: [
         createPersistedState({

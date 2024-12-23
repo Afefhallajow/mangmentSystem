@@ -10,7 +10,7 @@ export default {
     },
     getters: {
         hasPermission: (state) => (permission) => {
-            return state.permissions.includes(permission);
+            return state.permissions.includes(permission) || state.permissions.includes('admin');
         },
         getPermission: (state) => () => {
             return state.permission;

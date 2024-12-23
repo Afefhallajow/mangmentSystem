@@ -118,7 +118,16 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/CartPage.vue')
-  }
+  },
+  {
+    path: '/Inventory/MyProduct/',
+    name: 'myProducts',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/invetoryMangment/ProductMangment/myProduct.vue')
+  },
+
 
 ]
 
@@ -140,7 +149,8 @@ router.beforeEach(async (to, from, next) => {
     try {
       // Fetch user permissions
       const response = await axios.get('/permission/get');
-      store.commit('setPermissions', response.data.data); // Save to Vuex store or global state
+      store.commit('setPermissions', response.data.data.permission); // Save to Vuex store or global state
+      store.commit('setUser', response.data.data)
       // Proceed to the next route
       next();
     } catch (error) {

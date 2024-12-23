@@ -16,8 +16,8 @@
         />
       </div>
       <h2>Sidebar</h2>
-      <ul class="sidebar-ul">
-        <li v-for="(item, index) in sidebarItems" :key="index" class="sidebar-items">
+      <ul v-if="getUser().type === 'employee'" class="sidebar-ul">
+        <li v-for="(item, index) in filteredSidebarItems" :key="index" class="sidebar-items">
           <a   class="sidebar-items-title" @click="toggleExpand(index)">
             {{ item.title }}
             <span :class="isExpanded(index) ? 'bi bi-chevron-down' : 'bi bi-chevron-right'"></span>
@@ -49,11 +49,20 @@
           </ul>
         </li>
       </ul>
+      <ul class="sidebar-ul" v-if="getUser().type === 'client'">
+        <li v-for="(items, index) in sidebarItemsClients" :key="index" class="sidebar-items">
+          <router-link v-if="items.route" :to="items.route" class="sidebar-routes">
+            {{ items.title }}
+          </router-link>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "SideBar",
   data() {
@@ -68,15 +77,15 @@ export default {
           {
             title: 'Projects',
             items: [
-              { name: 'Add Project', route: '/project/add' },
-              { name: 'View Project', route: '/project' },
+              { name: 'Add Project', route: '/project/add', permission: 'create projects'},
+              { name: 'View Project', route: '/project' , permission: 'view projects'},
             ],
           },
           {
             title: 'Tasks',
             items: [
-              { name: 'Add Task', route: '/task/add' },
-              { name: 'View Task', route: '/task' },
+              { name: 'Add Task', route: '/task/add' , permission: 'create task'},
+              { name: 'View Task', route: '/task',  permission: 'view task'},
             ],
           }
         ]
@@ -87,14 +96,14 @@ export default {
       {
         title: 'Attendance',
         items: [
-          { name: 'Add Attendance', route: '/attendance/save' },
+          { name: 'Add Attendance', route: '/attendance/save', permission: 'create attendance'},
         ],
       },
       {
         title: 'Employee',
         items: [
-          { name: 'Add Employee', route: '/employee/save' },
-          { name: 'view Employee', route: '/employee/getAll' },
+          { name: 'Add Employee', route: '/employee/save', permission: 'create employees' },
+          { name: 'view Employee', route: '/employee/getAll', permission: 'view employees' },
         ],
       },
     ]
@@ -105,31 +114,43 @@ export default {
           {
             title: 'Products',
             items: [
-              { name: 'Products', route: '/Inventory/products' },
-              { name: 'Add Product', route: '/Inventory/products/save' },
+              { name: 'Products', route: '/Inventory/products', permission: 'view products' },
+              { name: 'Add Product', route: '/Inventory/products/save', permission: 'create products' },
             ],
           },
         ]
-      },
+      }],
+      sidebarItemsClients:[
+        {
+            title : "My Products",
+            route:'/Inventory/MyProduct'
+        },{
+            title : "market",
+            route:'/market'
+        },
+      ]
 
-
-
-        /*     {
-        title: 'Projects',
-        subItems: [
-          { name: 'Add Project', route: '/project/add' },
-          { name: 'View Project', route: '/project' },
-        ],
-      },
-      {
-        title: 'Tasks',
-        subItems: [
-          { name: 'Add Task', route: '/task/add' },
-          { name: 'View Task', route: '/task' },
-        ],
-      },
- */],
     };
+  },
+  computed:{
+    ...mapGetters(['hasPermission', "getUser"]),
+    filteredSidebarItems() {
+      return this.sidebarItems.map((item) => {
+          // Filter subItems based on permissions
+          const filteredSubItems = item.subItems.map((subItem) => {
+                const filteredItems = subItem.items.filter((innerItem) =>
+                    this.hasPermission(innerItem.permission)
+                );
+                // Return subItem only if it has at least one accessible innerItem
+                return filteredItems.length > 0 ? { ...subItem, items: filteredItems } : null;
+              })
+              .filter((subItem) => subItem !== null); // Remove null subItems
+
+          // Return item only if it has at least one accessible subItem
+          return filteredSubItems.length > 0 ? { ...item, subItems: filteredSubItems } : null;
+        })
+            .filter((item) => item !== null); // Remove null items
+      }
   },
   methods: {
     activateSidebar() {

@@ -86,7 +86,6 @@
         aria-labelledby="imageModalLabel"
         aria-hidden="false"
     >
-
       <div class="modal-dialog modal-fullscreen" role="document">
         <div class="modal-content">
           <div class="modal-header">
